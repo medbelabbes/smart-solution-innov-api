@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.smartsolutioninnovapi.domain.Role;
 import com.example.smartsolutioninnovapi.domain.User;
+import com.example.smartsolutioninnovapi.responses.CollectionResponse;
 import com.example.smartsolutioninnovapi.responses.Response;
 import com.example.smartsolutioninnovapi.services.UserService;
 import com.example.smartsolutioninnovapi.utils.TokenUtils;
@@ -32,8 +33,13 @@ public class UserController {
     private final TokenUtils tokenUtils;
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok().body(userService.getUsers());
+    public ResponseEntity<CollectionResponse> getUsers(
+            @RequestParam String query,
+            @RequestParam Optional<Integer> page,
+            @RequestParam Optional<Integer> size,
+            @RequestParam Optional<String> sortBy
+    ) {
+        return ResponseEntity.ok().body(userService.getUsers(query, page, size, sortBy));
     }
 
 

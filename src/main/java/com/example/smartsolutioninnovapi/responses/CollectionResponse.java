@@ -13,4 +13,5 @@ public class CollectionResponse {
     private boolean status;
     private String message;
     private List<?> data;
+    private int count;
 }

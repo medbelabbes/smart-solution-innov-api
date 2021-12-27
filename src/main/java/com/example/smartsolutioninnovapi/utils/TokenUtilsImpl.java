@@ -6,12 +6,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.smartsolutioninnovapi.domain.User;
 import com.example.smartsolutioninnovapi.repositories.UserRepository;
-import com.example.smartsolutioninnovapi.services.UserService;
-import com.example.smartsolutioninnovapi.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;

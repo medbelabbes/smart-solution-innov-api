@@ -2,6 +2,7 @@ package com.example.smartsolutioninnovapi.services.impl;
 
 import com.example.smartsolutioninnovapi.domain.Role;
 import com.example.smartsolutioninnovapi.domain.User;
+import com.example.smartsolutioninnovapi.dto.UserDto;
 import com.example.smartsolutioninnovapi.repositories.RoleRepository;
 import com.example.smartsolutioninnovapi.repositories.UserRepository;
 import com.example.smartsolutioninnovapi.responses.CollectionResponse;
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 user.getRoles().add(role);
                 user.setCreationDate(new Date());
                 User savedUser = userRepository.save(user);
-                if(connectedAdmin != null) {
+                if (connectedAdmin != null) {
                     user.setCreatedBy(connectedAdmin.getId());
                 }
                 response.setStatus(true);
@@ -75,8 +76,29 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    public CollectionResponse getUsers(String query, Optional<Integer> page, Optional<Integer> size, Optional<String> sortBy) {
+        CollectionResponse response = new CollectionResponse(false, "", new ArrayList<>(), 0);
+        try {
+            String searchQuery = query.toLowerCase();
+            Page<User> usersPage = this.userRepository.findAll(
+                    searchQuery,
+                    PageRequest.of(page.orElse(0),
+                            size.orElse(50),
+                            Sort.Direction.DESC, sortBy.orElse("creationDate")));
+            response.setStatus(true);
+            response.setMessage(usersPage.getContent().size() == 0 ? "Users fetched successfully" : "Users list empty");
+            ArrayList<UserDto> users = new ArrayList<>();
+            usersPage.getContent().forEach(user -> {
+                users.add(mapper.mapUserToDto(user));
+            });
+            response.setData(users);
+            response.setCount((int) usersPage.getTotalElements());
+            return response;
+        } catch (Exception e) {
+            response.setMessage("Exception: " + e.getMessage());
+            return response;
+        }
+
     }
 
     @Override

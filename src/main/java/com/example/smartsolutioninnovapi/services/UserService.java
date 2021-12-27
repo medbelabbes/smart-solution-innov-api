@@ -15,7 +15,7 @@ public interface UserService {
 
     User getUser(String username);
 
-    List<User> getUsers();
+    CollectionResponse getUsers(String query, Optional<Integer> page, Optional<Integer> size, Optional<String> sortBy);
 
 
 }
