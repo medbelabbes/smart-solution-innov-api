@@ -9,9 +9,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CollectionResponse {
+public class Response {
     private boolean status;
     private String message;
-    private List<?> data;
-    private int count;
+    private Object data;
 }

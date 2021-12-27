@@ -1,5 +1,6 @@
-package com.example.smartsolutioninnovapi.domain;
+package com.example.smartsolutioninnovapi.dto;
 
+import com.example.smartsolutioninnovapi.domain.Role;
 import com.example.smartsolutioninnovapi.domain.enumeration.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,48 +15,23 @@ import javax.validation.constraints.Email;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import static javax.persistence.FetchType.EAGER;
-import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.AUTO;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = AUTO)
+public class UserDto {
     private Long id;
     private String name;
-
-    @Column(unique = true)
     private String username;
-
-    @Email
-    @Column(unique = true)
     private String email;
-
     private UserStatus status;
-
     private String password;
-    @ManyToMany(fetch = EAGER)
-    private Collection<Role> roles = new ArrayList<>();
-
-
-    @CreatedBy
+    private Collection<RoleDto> roles = new ArrayList<>();
     private Long createdBy;
-    @CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    @LastModifiedBy
     private Long lastModifiedBy;
-    @LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
-
-    @ManyToMany(fetch = LAZY)
-    private Collection<Task> tasks = new ArrayList<>();
 }
