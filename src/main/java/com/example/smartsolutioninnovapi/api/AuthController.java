@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.smartsolutioninnovapi.domain.Role;
 import com.example.smartsolutioninnovapi.domain.User;
-import com.example.smartsolutioninnovapi.responses.Response;
+import com.example.smartsolutioninnovapi.utils.responses.Response;
 import com.example.smartsolutioninnovapi.services.AuthService;
 import com.example.smartsolutioninnovapi.services.UserService;
 import com.example.smartsolutioninnovapi.utils.TokenUtils;
@@ -14,12 +14,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URI;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +53,7 @@ public class AuthController {
                 DecodedJWT decodedJWT = verifier.verify(refresh_token);
                 String username = decodedJWT.getSubject();
                 System.out.println("before get user");
-                User user = userService.getUser(username);
+                User user = userService.getUserByUsername(username);
                 System.out.println("after get user");
                 String access_token = JWT.create()
                         .withSubject(user.getUsername())
@@ -72,10 +70,8 @@ public class AuthController {
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
             } catch (Exception e) {
-                System.out.println(e);
                 response.setHeader("error", e.getMessage());
                 response.setStatus(FORBIDDEN.value());
-//                    response.sendError(FORBIDDEN.value());
                 Map<String, String> error = new HashMap<>();
                 error.put("error_message", e.getMessage());
                 response.setContentType(APPLICATION_JSON_VALUE);

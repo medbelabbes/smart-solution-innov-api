@@ -2,18 +2,18 @@ package com.example.smartsolutioninnovapi.services.impl;
 
 import com.example.smartsolutioninnovapi.domain.Role;
 import com.example.smartsolutioninnovapi.domain.User;
+import com.example.smartsolutioninnovapi.domain.enumeration.UserStatus;
 import com.example.smartsolutioninnovapi.dto.UserDto;
 import com.example.smartsolutioninnovapi.repositories.RoleRepository;
 import com.example.smartsolutioninnovapi.repositories.UserRepository;
-import com.example.smartsolutioninnovapi.responses.CollectionResponse;
-import com.example.smartsolutioninnovapi.responses.Response;
+import com.example.smartsolutioninnovapi.utils.responses.CollectionResponse;
+import com.example.smartsolutioninnovapi.utils.responses.Response;
 import com.example.smartsolutioninnovapi.services.UserService;
 import com.example.smartsolutioninnovapi.utils.Mapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -70,9 +70,45 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User getUser(String username) {
+    public Response updateUser(UserDto userDto) {
+        return null;
+    }
+
+    @Override
+    public Response deleteUser(UserDto userDto) {
+        return null;
+    }
+
+    @Override
+    public Response getUserById(String username) {
+        return null;
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return  userRepository.findByUsername(username);
+    }
+
+    @Override
+    public Response getUser(String username) {
         log.info("Fetching user {}", username);
-        return userRepository.findByUsername(username);
+        Response response = new Response(false, "", null);
+        try {
+            User user = userRepository.findByUsername(username);
+            if(user == null) {
+                response.setMessage("User  not found");
+                response.setData(null);
+            } else {
+                response.setStatus(true);
+                response.setMessage("User fetched successfully");
+                response.setData(mapper.mapUserToDto(user));
+            }
+            return response;
+        } catch (Exception e) {
+            response.setMessage("Exception: " + e.getMessage());
+            response.setData(null);
+            return response;
+        }
     }
 
     @Override
@@ -99,6 +135,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return response;
         }
 
+    }
+
+    @Override
+    public Response updatePassword(UserDto userDto) throws Exception {
+        return null;
+    }
+
+    @Override
+    public boolean changeUserStatus(long id, UserStatus userStatus) throws Exception {
+        return false;
     }
 
 

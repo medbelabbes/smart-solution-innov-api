@@ -1,22 +1,12 @@
 package com.example.smartsolutioninnovapi.api;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.smartsolutioninnovapi.domain.Role;
 import com.example.smartsolutioninnovapi.domain.User;
-import com.example.smartsolutioninnovapi.responses.CollectionResponse;
-import com.example.smartsolutioninnovapi.responses.Response;
+import com.example.smartsolutioninnovapi.utils.responses.CollectionResponse;
+import com.example.smartsolutioninnovapi.utils.responses.Response;
 import com.example.smartsolutioninnovapi.services.UserService;
 import com.example.smartsolutioninnovapi.utils.TokenUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 

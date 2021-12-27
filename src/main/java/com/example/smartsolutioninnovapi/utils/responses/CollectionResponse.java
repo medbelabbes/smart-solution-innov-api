@@ -1,4 +1,4 @@
-package com.example.smartsolutioninnovapi.responses;
+package com.example.smartsolutioninnovapi.utils.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

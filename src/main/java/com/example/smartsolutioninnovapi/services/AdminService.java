@@ -8,23 +8,22 @@ import com.example.smartsolutioninnovapi.utils.responses.Response;
 
 import java.util.Optional;
 
-public interface UserService {
-    Response saveUser(User user, User connectedAdmin);
+public interface AdminService {
 
-    Response updateUser(UserDto userDto);
+    Response saveAdmin(User user, User connectedAdmin);
 
+    Response updatedAdmin(UserDto userDto);
 
-    Response deleteUser(UserDto userDto);
-
-
-    Response getUserById(String username);
+    Response deleteAdmin(UserDto userDto);
 
 
-    User getUserByUsername(String username);
+    Response getAdminById(String username);
 
-    Response getUser(String username);
 
-    CollectionResponse getUsers(String query, Optional<Integer> page, Optional<Integer> size, Optional<String> sortBy);
+    Response getAdminByUsername(String username);
+
+
+    CollectionResponse getAdmins(String query, Optional<Integer> page, Optional<Integer> size, Optional<String> sortBy);
 
 
     Response updatePassword(UserDto userDto) throws Exception;

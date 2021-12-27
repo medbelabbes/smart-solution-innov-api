@@ -1,10 +1,8 @@
-package com.example.smartsolutioninnovapi.responses;
+package com.example.smartsolutioninnovapi.utils.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor

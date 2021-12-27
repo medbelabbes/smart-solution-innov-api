@@ -1,17 +1,14 @@
 package com.example.smartsolutioninnovapi.api;
 
 import com.example.smartsolutioninnovapi.domain.Role;
-import com.example.smartsolutioninnovapi.domain.User;
 import com.example.smartsolutioninnovapi.services.RoleService;
-import com.example.smartsolutioninnovapi.services.UserService;
-import lombok.Data;
+import com.example.smartsolutioninnovapi.utils.bodiesForms.RoleToUserForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -32,9 +29,3 @@ public class RoleController {
     }
 }
 
-
-@Data
-class RoleToUserForm {
-    private String username;
-    private String roleName;
-}

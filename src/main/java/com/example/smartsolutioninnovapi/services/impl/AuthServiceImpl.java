@@ -4,7 +4,7 @@ import com.example.smartsolutioninnovapi.domain.Role;
 import com.example.smartsolutioninnovapi.domain.User;
 import com.example.smartsolutioninnovapi.repositories.RoleRepository;
 import com.example.smartsolutioninnovapi.repositories.UserRepository;
-import com.example.smartsolutioninnovapi.responses.Response;
+import com.example.smartsolutioninnovapi.utils.responses.Response;
 import com.example.smartsolutioninnovapi.services.AuthService;
 import com.example.smartsolutioninnovapi.utils.Mapper;
 import lombok.RequiredArgsConstructor;
