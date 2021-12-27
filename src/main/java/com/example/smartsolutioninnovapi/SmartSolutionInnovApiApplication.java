@@ -36,7 +36,8 @@ public class SmartSolutionInnovApiApplication {
             roleService.saveRole(new Role(null, "ROLE_ADMIN"));
             roleService.saveRole(new Role(null, "ROLE_SUPER_ADMIN"));
 
-            userService.saveUser(new User(null,
+            userService.saveUser(new User(
+                    null,
                     "Mohamed Abdelillah",
                     "medbelabbes",
                     "med.abdelillah.belabbes@gmail.com",
@@ -46,30 +47,53 @@ public class SmartSolutionInnovApiApplication {
                     null,
                     new Date(),
                     null,
-                    null
+                    null,
+                    new ArrayList<>()
             ), null);
-            userService.saveUser(new User(null, "Djamel Eddine", "djamel",
+
+            userService.saveUser(new User(
+                    null,
+                    "Djamel Eddine",
+                    "djamel",
                     "djamel@gmail.com",
                     UserStatus.PENDING,
-                    "123456", new ArrayList<>(),
+                    "123456",
+                    new ArrayList<>(),
                     null,
                     new Date(),
                     null,
-                    null), null);
-            userService.saveUser(new User(null, "Abdelhamid Kamel", "hamid",
+                    null,
+                    new ArrayList<>()),
+                    null);
+
+            userService.saveUser(new User(
+                    null,
+                    "Abdelhamid Kamel",
+                    "hamid",
                     "hamid@gmail.com",
-                    UserStatus.PENDING, "123456", new ArrayList<>(),
+                    UserStatus.PENDING,
+                    "123456",
+                    new ArrayList<>(),
                     null,
                     new Date(),
                     null,
-                    null), null);
-            userService.saveUser(new User(null, "Salim", "salim",
+                    null,
+                    new ArrayList<>()),
+                    null);
+
+            userService.saveUser(new User(
+                    null,
+                    "Salim",
+                    "salim",
                     "salim@gmail.com",
-                    UserStatus.PENDING, "123456", new ArrayList<>(),
+                    UserStatus.PENDING,
+                    "123456",
+                    new ArrayList<>(),
                     null,
                     new Date(),
                     null,
-                    null), null);
+                    null,
+                    new ArrayList<>()), null);
 
             roleService.addRoleToUser("medbelabbes", "ROLE_SUPER_ADMIN");
             roleService.addRoleToUser("djamel", "ROLE_ADMIN");

@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.AUTO;
 
 @Entity
@@ -54,4 +55,7 @@ public class User {
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
+
+    @ManyToMany(fetch = LAZY)
+    private Collection<Task> tasks = new ArrayList<>();
 }
