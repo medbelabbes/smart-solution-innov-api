@@ -12,12 +12,12 @@ public interface AdminService {
 
     Response saveAdmin(User user, User connectedAdmin);
 
-    Response updatedAdmin(UserDto userDto);
+    Response updatedAdmin(UserDto userDto, User connectedAdmin);
 
-    Response deleteAdmin(UserDto userDto);
+    Response deleteAdmin(UserDto userDto, User connectedAdmin);
 
 
-    Response getAdminById(String username);
+    Response getAdminById(long id);
 
 
     Response getAdminByUsername(String username);
