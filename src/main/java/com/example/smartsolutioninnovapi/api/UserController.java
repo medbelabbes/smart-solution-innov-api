@@ -29,7 +29,6 @@ import java.util.*;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-
     private final TokenUtils tokenUtils;
 
     @GetMapping("/users")

@@ -6,16 +6,22 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.smartsolutioninnovapi.domain.Role;
 import com.example.smartsolutioninnovapi.domain.User;
+import com.example.smartsolutioninnovapi.responses.Response;
+import com.example.smartsolutioninnovapi.services.AuthService;
 import com.example.smartsolutioninnovapi.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +37,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 public class AuthController {
 
     private final UserService userService;
+    private final AuthService authService;
 
 
     @PostMapping("/token/refresh")
@@ -71,6 +78,12 @@ public class AuthController {
             throw new RuntimeException("Refresh token is missing");
         }
 
+    }
+
+
+    @PostMapping("/register")
+    public ResponseEntity<Response> register(@RequestBody User user) {
+        return ResponseEntity.created(null).body(authService.register(user));
     }
 
 }

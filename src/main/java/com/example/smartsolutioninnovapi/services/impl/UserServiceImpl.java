@@ -42,7 +42,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         log.info("Saving new user {} to the database", user.getName());
         Response response = new Response(false, "", null);
         try {
-            System.out.println("here");
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             Role role = roleRepository.findByName("ROLE_USER");
             if (role == null) {
