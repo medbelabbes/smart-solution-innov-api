@@ -45,12 +45,12 @@ public class UserController {
 
     @PostMapping("/user/save")
     public ResponseEntity<Response> saveUser(@RequestBody User user, HttpServletRequest request) {
-        System.out.println("here1");
         User currentUser = tokenUtils.getCurrentUser(request);
-        System.out.println(currentUser.getId());
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/user/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user, currentUser));
     }
+
+
 
 
 }

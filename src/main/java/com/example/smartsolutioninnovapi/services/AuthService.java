@@ -6,4 +6,6 @@ import com.example.smartsolutioninnovapi.responses.Response;
 public interface AuthService {
     Response register(User user);
 
+    Response getCurrentUser(User currentUser);
+
 }

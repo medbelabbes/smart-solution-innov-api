@@ -68,4 +68,26 @@ public class AuthServiceImpl implements AuthService {
             return response;
         }
     }
+
+    @Override
+    public Response getCurrentUser(User currentUser) {
+        log.info("Get current user");
+        Response response = new Response(false, "", null);
+        try {
+            if(currentUser == null) {
+                response.setMessage("User not found");
+                response.setData(null);
+            } else {
+                response.setStatus(true);
+                response.setMessage("User fetched successfully");
+                response.setData(mapper.mapUserToDto(currentUser));
+            }
+            return response;
+        } catch (Exception e) {
+            response.setMessage("Exception: " + e.getMessage());
+            response.setData(null);
+            return response;
+        }
+    }
+
 }
