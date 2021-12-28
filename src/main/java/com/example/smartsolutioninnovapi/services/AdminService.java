@@ -23,15 +23,12 @@ public interface AdminService {
     Response getAdminByUsername(String username);
 
 
-    CollectionResponse getAdmins(String query, Optional<Integer> page, Optional<Integer> size, Optional<String> sortBy);
+    CollectionResponse getAdmins(String query, String role, Optional<Integer> page, Optional<Integer> size, Optional<String> sortBy);
 
 
     Response updatePassword(UserDto userDto) throws Exception;
 
     boolean changeUserStatus(long id, UserStatus userStatus) throws Exception;
-
-
-
 
 
 }
