@@ -18,6 +18,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class AdminController {
     private final AdminService adminService;
     private final TokenUtils tokenUtils;

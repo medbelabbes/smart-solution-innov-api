@@ -13,6 +13,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class RoleController {
     private final RoleService roleService;
 

@@ -7,6 +7,7 @@ import com.example.smartsolutioninnovapi.dto.UserDto;
 import com.example.smartsolutioninnovapi.repositories.AdminRepository;
 import com.example.smartsolutioninnovapi.repositories.RoleRepository;
 import com.example.smartsolutioninnovapi.services.AdminService;
+import com.example.smartsolutioninnovapi.utils.Global;
 import com.example.smartsolutioninnovapi.utils.Mapper;
 import com.example.smartsolutioninnovapi.utils.responses.CollectionResponse;
 import com.example.smartsolutioninnovapi.utils.responses.Response;
@@ -30,7 +31,8 @@ import java.util.Optional;
 public class AdminServiceImpl implements AdminService {
 
     private final AdminRepository adminRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final Global global = new Global();
+
     public Mapper mapper = new Mapper();
 
 
@@ -39,7 +41,7 @@ public class AdminServiceImpl implements AdminService {
         log.info("Saving new user {} to the database", admin.getName());
         Response response = new Response(false, "", null);
         try {
-            admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+            admin.setPassword(global.hashPassword(admin.getPassword()));
             admin.setCreationDate(new Date());
             User savedUser = adminRepository.save(admin);
             if (connectedAdmin != null) {

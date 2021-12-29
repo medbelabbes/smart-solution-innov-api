@@ -4,14 +4,17 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.smartsolutioninnovapi.config.JwtUtil;
 import com.example.smartsolutioninnovapi.domain.Role;
 import com.example.smartsolutioninnovapi.domain.User;
+import com.example.smartsolutioninnovapi.dto.UserDto;
 import com.example.smartsolutioninnovapi.utils.responses.Response;
 import com.example.smartsolutioninnovapi.services.AuthService;
 import com.example.smartsolutioninnovapi.services.UserService;
 import com.example.smartsolutioninnovapi.utils.TokenUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,38 +33,32 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     private final UserService userService;
     private final AuthService authService;
     private final TokenUtils tokenUtils;
-
+    private final JwtUtil jwtUtil;
 
 
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("herehere");
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
-                System.out.println("here");
                 String refresh_token = authorizationHeader.substring("Bearer ".length());
-                System.out.println("refreshToken");
-                System.out.println(refresh_token);
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refresh_token);
                 String username = decodedJWT.getSubject();
-                System.out.println("before get user");
                 User user = userService.getUserByUsername(username);
-                System.out.println("after get user");
                 String access_token = JWT.create()
                         .withSubject(user.getUsername())
                         .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                         .sign(algorithm);
-                System.out.println("here");
 
 
                 Map<String, String> tokens = new HashMap<>();
@@ -84,12 +81,18 @@ public class AuthController {
     }
 
 
-    @PostMapping("/register")
+    @PostMapping(value = "login")
+    public Response generate(@RequestBody final UserDto userDto) throws Exception {
+        return authService.generateToken(userDto, jwtUtil);
+    }
+
+
+    @PostMapping("register")
     public ResponseEntity<Response> register(@RequestBody User user) {
         return ResponseEntity.created(null).body(authService.register(user));
     }
 
-    @PostMapping("/current")
+    @GetMapping("current")
     public ResponseEntity<Response> getCurrentUser(HttpServletRequest request) {
         return ResponseEntity.ok()
                 .body(authService.getCurrentUser

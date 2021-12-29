@@ -6,6 +6,7 @@ import com.example.smartsolutioninnovapi.domain.enumeration.UserStatus;
 import com.example.smartsolutioninnovapi.dto.UserDto;
 import com.example.smartsolutioninnovapi.repositories.RoleRepository;
 import com.example.smartsolutioninnovapi.repositories.UserRepository;
+import com.example.smartsolutioninnovapi.utils.Global;
 import com.example.smartsolutioninnovapi.utils.responses.CollectionResponse;
 import com.example.smartsolutioninnovapi.utils.responses.Response;
 import com.example.smartsolutioninnovapi.services.UserService;
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final Global global = new Global();
 
     public Mapper mapper = new Mapper();
 
@@ -43,7 +44,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         log.info("Saving new user {} to the database", user.getName());
         Response response = new Response(false, "", null);
         try {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setPassword(global.hashPassword(user.getPassword()));
             Role role = roleRepository.findByName("ROLE_USER");
             if (role == null) {
                 response.setMessage("Role not found");
