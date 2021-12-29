@@ -3,9 +3,9 @@ package com.example.smartsolutioninnovapi.services.impl;
 import com.example.smartsolutioninnovapi.domain.Role;
 import com.example.smartsolutioninnovapi.domain.User;
 import com.example.smartsolutioninnovapi.domain.enumeration.UserStatus;
+import com.example.smartsolutioninnovapi.dto.RoleDto;
 import com.example.smartsolutioninnovapi.dto.UserDto;
 import com.example.smartsolutioninnovapi.repositories.AdminRepository;
-import com.example.smartsolutioninnovapi.repositories.RoleRepository;
 import com.example.smartsolutioninnovapi.services.AdminService;
 import com.example.smartsolutioninnovapi.utils.Global;
 import com.example.smartsolutioninnovapi.utils.Mapper;
@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -60,7 +59,41 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Response updatedAdmin(UserDto userDto, User connectedAdmin) {
-        return null;
+        log.info("Updating  user {} to the database", userDto.getName());
+        Response response = new Response(false, "", null);
+        try {
+            User user = adminRepository.findAdminById(userDto.getId());
+            if(user == null) {
+                response.setMessage("Admin not found");
+                response.setData(null);
+            } else {
+                System.out.println("kda mena melhih");
+                user.setId(userDto.getId());
+                user.setName(userDto.getName());
+                user.setUsername(userDto.getUsername());
+                user.setEmail(userDto.getEmail());
+                user.setStatus(userDto.getStatus());
+                ArrayList<Role> roles = new ArrayList<>();
+                userDto.getRoles().forEach(role -> {
+                    roles.add(new Role(role.getId(), role.getName()));
+                });
+                user.setRoles(roles);
+                user.setCreatedBy(user.getCreatedBy());
+                user.setLastModifiedBy(user.getLastModifiedBy());
+                user.setLastModifiedDate(user.getLastModifiedDate());
+                user.setTasks(new ArrayList<>());
+                adminRepository.save(user);
+                response.setStatus(true);
+                response.setMessage("Admin updated successfully");
+                response.setData(mapper.mapUserToDto(user));
+            }
+            return response;
+        } catch (Exception e) {
+            System.out.println("exception");
+            response.setMessage("Exception: " + e.getMessage());
+            response.setData(null);
+            return response;
+        }
     }
 
     @Override
@@ -70,7 +103,23 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Response getAdminById(long id) {
-        return null;
+        log.info("Get admin by id");
+        Response response = new Response(false, "", null);
+        try {
+            User user = adminRepository.findAdminById(id);
+            if(user == null) {
+                response.setMessage("Not found");
+            } else {
+                response.setStatus(true);
+                response.setMessage("Admin added successfully");
+                response.setData(mapper.mapUserToDto(user));
+            }
+            return response;
+        } catch (Exception e) {
+            response.setMessage("Exception: " + e.getMessage());
+            response.setData(null);
+            return response;
+        }
     }
 
     @Override

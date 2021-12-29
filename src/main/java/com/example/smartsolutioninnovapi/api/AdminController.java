@@ -2,6 +2,7 @@ package com.example.smartsolutioninnovapi.api;
 
 
 import com.example.smartsolutioninnovapi.domain.User;
+import com.example.smartsolutioninnovapi.dto.UserDto;
 import com.example.smartsolutioninnovapi.services.AdminService;
 import com.example.smartsolutioninnovapi.utils.TokenUtils;
 import com.example.smartsolutioninnovapi.utils.responses.CollectionResponse;
@@ -36,11 +37,26 @@ public class AdminController {
         return ResponseEntity.ok().body(adminService.getAdmins(query, role, page, size, sortBy));
     }
 
+    @GetMapping("/admins/get/{id}")
+    public ResponseEntity<Response> getById(
+            @PathVariable("id")  Long id
+    ) {
+        return ResponseEntity.ok().body(adminService.getAdminById(id));
+    }
+
     @PostMapping("/admin/save")
     public ResponseEntity<Response> saveAdmin(@RequestBody User admin, HttpServletRequest request) {
         User currentUser = tokenUtils.getCurrentUser(request);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/admin/save").toUriString());
         return ResponseEntity.created(uri).body(adminService.saveAdmin(admin, currentUser));
+    }
+
+    @PutMapping("/admin/edit")
+    public ResponseEntity<Response> editAdmin(@RequestBody UserDto admin, HttpServletRequest request) {
+        System.out.println(admin.getId());
+        System.out.println("*******************");
+        User currentUser = tokenUtils.getCurrentUser(request);
+        return ResponseEntity.created(null).body(adminService.updatedAdmin(admin, currentUser));
     }
 
 

@@ -31,7 +31,7 @@ public class RoleController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/admin-roles")
+    @GetMapping("/roles/admin-roles")
     public ResponseEntity<CollectionResponse> getRoles(
             @RequestParam Optional<Integer> page,
             @RequestParam Optional<Integer> size,
