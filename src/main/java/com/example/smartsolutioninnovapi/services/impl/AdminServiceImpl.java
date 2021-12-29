@@ -90,7 +90,7 @@ public class AdminServiceImpl implements AdminService {
                             size.orElse(50),
                             Sort.Direction.DESC, sortBy.orElse("creationDate")));
             response.setStatus(true);
-            response.setMessage(adminsPage.getContent().size() == 0 ? "Admins fetched successfully" : "Admins list empty");
+            response.setMessage(adminsPage.getContent().size() > 0 ? "Admins fetched successfully" : "Admins list empty");
             ArrayList<UserDto> admins = new ArrayList<>();
             adminsPage.getContent().forEach(admin -> {
                 admins.add(mapper.mapUserToDto(admin));

@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                             size.orElse(50),
                             Sort.Direction.DESC, sortBy.orElse("creationDate")));
             response.setStatus(true);
-            response.setMessage(usersPage.getContent().size() == 0 ? "Users fetched successfully" : "Users list empty");
+            response.setMessage(usersPage.getContent().size() > 0 ? "Users fetched successfully" : "Users list empty");
             ArrayList<UserDto> users = new ArrayList<>();
             usersPage.getContent().forEach(user -> {
                 users.add(mapper.mapUserToDto(user));
