@@ -38,7 +38,7 @@ public class AdminController {
 
     @GetMapping("/admins/get/{id}")
     public ResponseEntity<Response> getById(
-            @PathVariable("id")  Long id
+            @PathVariable("id") Long id
     ) {
         return ResponseEntity.ok().body(adminService.getAdminById(id));
     }
@@ -55,6 +55,13 @@ public class AdminController {
         User currentUser = tokenUtils.getCurrentUser(request);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/admin/edit").toUriString());
         return ResponseEntity.created(uri).body(adminService.updateAdmin(admin, currentUser));
+    }
+
+    @DeleteMapping("/admin/delete/{id}")
+    public ResponseEntity<Response> deleteAdmin(@PathVariable("id") Long id, HttpServletRequest request) {
+        User currentUser = tokenUtils.getCurrentUser(request);
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/admin/delete/" + id).toUriString());
+        return ResponseEntity.created(uri).body(adminService.deleteAdmin(id, currentUser));
     }
 
 

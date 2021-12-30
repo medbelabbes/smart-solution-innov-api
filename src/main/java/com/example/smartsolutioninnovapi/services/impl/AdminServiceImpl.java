@@ -6,6 +6,7 @@ import com.example.smartsolutioninnovapi.domain.enumeration.UserStatus;
 import com.example.smartsolutioninnovapi.dto.RoleDto;
 import com.example.smartsolutioninnovapi.dto.UserDto;
 import com.example.smartsolutioninnovapi.repositories.AdminRepository;
+import com.example.smartsolutioninnovapi.repositories.UserRepository;
 import com.example.smartsolutioninnovapi.services.AdminService;
 import com.example.smartsolutioninnovapi.utils.Global;
 import com.example.smartsolutioninnovapi.utils.Mapper;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +32,7 @@ import java.util.Optional;
 public class AdminServiceImpl implements AdminService {
 
     private final AdminRepository adminRepository;
+    private final UserRepository userRepository;
     private final Global global = new Global();
 
     public Mapper mapper = new Mapper();
@@ -63,7 +66,7 @@ public class AdminServiceImpl implements AdminService {
         Response response = new Response(false, "", null);
         try {
             User user = adminRepository.findAdminById(userDto.getId());
-            if(user == null) {
+            if (user == null) {
                 response.setMessage("Admin not found");
                 response.setData(null);
             } else {
@@ -95,8 +98,35 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Response deleteAdmin(UserDto userDto, User connectedAdmin) {
-        return null;
+    public Response deleteAdmin(Long id, User connectedAdmin) {
+        log.info("Delete admin admin");
+        Response response = new Response(false, "", null);
+        try {
+            User admin = adminRepository.findAdminById(id);
+            if (admin == null) {
+                response.setMessage("Not found");
+            } else {
+                List<User> users = userRepository.findUserByAdmin(admin.getId());
+                if (users.size() > 0) {
+                    users.forEach(u -> {
+                        u.setCreatedBy(null);
+                        if(u.getLastModifiedBy() == admin.getId()) {
+                            u.setLastModifiedBy(null);
+                        }
+                        userRepository.save(u);
+                    });
+                }
+                adminRepository.delete(admin);
+                response.setStatus(true);
+                response.setMessage("Admin deleted");
+                response.setData(null);
+            }
+            return response;
+        } catch (Exception e) {
+            response.setMessage("Exception: " + e.getMessage());
+            response.setData(null);
+            return response;
+        }
     }
 
     @Override
@@ -105,7 +135,7 @@ public class AdminServiceImpl implements AdminService {
         Response response = new Response(false, "", null);
         try {
             User user = adminRepository.findAdminById(id);
-            if(user == null) {
+            if (user == null) {
                 response.setMessage("Not found");
             } else {
                 response.setStatus(true);

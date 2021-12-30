@@ -14,7 +14,7 @@ public interface AdminService {
 
     Response updateAdmin(UserDto userDto, User connectedAdmin);
 
-    Response deleteAdmin(UserDto userDto, User connectedAdmin);
+    Response deleteAdmin(Long id, User connectedAdmin);
 
 
     Response getAdminById(long id);
