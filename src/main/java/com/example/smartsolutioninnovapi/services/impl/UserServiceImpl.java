@@ -71,8 +71,40 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Response updateUser(UserDto userDto) {
-        return null;
+    public Response updateUser(UserDto userDto, User connectedAdmin) {
+        log.info("Updating  user {} to the database", userDto.getName());
+        Response response = new Response(false, "", null);
+        try {
+            User user = userRepository.findAdminById(userDto.getId());
+            if(user == null) {
+                response.setMessage("User not found");
+                response.setData(null);
+            } else {
+                user.setId(userDto.getId());
+                user.setName(userDto.getName());
+                user.setUsername(userDto.getUsername());
+                user.setEmail(userDto.getEmail());
+                user.setStatus(userDto.getStatus());
+                ArrayList<Role> roles = new ArrayList<>();
+                userDto.getRoles().forEach(role -> {
+                    roles.add(new Role(role.getId(), role.getName()));
+                });
+                user.setRoles(roles);
+                user.setLastModifiedBy(connectedAdmin.getId());
+                user.setLastModifiedDate(new Date());
+                user.setTasks(new ArrayList<>());
+                userRepository.save(user);
+                response.setStatus(true);
+                response.setMessage("User updated successfully");
+                response.setData(mapper.mapUserToDto(user));
+            }
+            return response;
+        } catch (Exception e) {
+            System.out.println("exception");
+            response.setMessage("Exception: " + e.getMessage());
+            response.setData(null);
+            return response;
+        }
     }
 
     @Override
@@ -81,8 +113,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Response getUserById(String username) {
-        return null;
+    public Response getUserById(long id) {
+        log.info("Get User by id");
+        Response response = new Response(false, "", null);
+        try {
+            User user = userRepository.findAdminById(id);
+            if(user == null) {
+                response.setMessage("Not found");
+            } else {
+                response.setStatus(true);
+                response.setMessage("User fetched successfully");
+                response.setData(mapper.mapUserToDto(user));
+            }
+            return response;
+        } catch (Exception e) {
+            response.setMessage("Exception: " + e.getMessage());
+            response.setData(null);
+            return response;
+        }
     }
 
     @Override

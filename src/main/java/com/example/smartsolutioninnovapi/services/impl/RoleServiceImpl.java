@@ -61,4 +61,25 @@ public class RoleServiceImpl implements RoleService {
         }
 
     }
+
+    @Override
+    public CollectionResponse getUserRoles(Optional<Integer> page, Optional<Integer> size, Optional<String> sortBy) {
+        CollectionResponse response = new CollectionResponse(false, "", new ArrayList<>(), 0);
+        try {
+            Page<Role> rolesPage = this.roleRepository.findUserRoles(
+                    PageRequest.of(page.orElse(0),
+                            size.orElse(50),
+                            Sort.Direction.ASC, sortBy.orElse("id")));
+            response.setStatus(true);
+            response.setMessage(rolesPage.getContent().size() > 0 ? "Roles fetched successfully" : "Roles list empty");
+
+            response.setData(rolesPage.getContent());
+            response.setCount((int) rolesPage.getTotalElements());
+            return response;
+        } catch (Exception e) {
+            response.setMessage("Exception: " + e.getMessage());
+            return response;
+        }
+
+    }
 }

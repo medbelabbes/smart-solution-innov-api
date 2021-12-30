@@ -13,4 +13,7 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     @Query("select r from Role r  where r.name in ('ROLE_ADMIN', 'ROLE_SUPER_ADMIN')")
     Page<Role> findAdminRoles(Pageable pageable);
+
+    @Query("select r from Role r  where r.name = 'ROLE_USER'")
+    Page<Role> findUserRoles(Pageable pageable);
 }

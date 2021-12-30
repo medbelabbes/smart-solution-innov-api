@@ -58,8 +58,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Response updatedAdmin(UserDto userDto, User connectedAdmin) {
-        log.info("Updating  user {} to the database", userDto.getName());
+    public Response updateAdmin(UserDto userDto, User connectedAdmin) {
+        log.info("Updating  admin {} to the database", userDto.getName());
         Response response = new Response(false, "", null);
         try {
             User user = adminRepository.findAdminById(userDto.getId());
@@ -67,7 +67,6 @@ public class AdminServiceImpl implements AdminService {
                 response.setMessage("Admin not found");
                 response.setData(null);
             } else {
-                System.out.println("kda mena melhih");
                 user.setId(userDto.getId());
                 user.setName(userDto.getName());
                 user.setUsername(userDto.getUsername());
@@ -78,9 +77,8 @@ public class AdminServiceImpl implements AdminService {
                     roles.add(new Role(role.getId(), role.getName()));
                 });
                 user.setRoles(roles);
-                user.setCreatedBy(user.getCreatedBy());
-                user.setLastModifiedBy(user.getLastModifiedBy());
-                user.setLastModifiedDate(user.getLastModifiedDate());
+                user.setLastModifiedBy(connectedAdmin.getId());
+                user.setLastModifiedDate(new Date());
                 user.setTasks(new ArrayList<>());
                 adminRepository.save(user);
                 response.setStatus(true);
@@ -111,7 +109,7 @@ public class AdminServiceImpl implements AdminService {
                 response.setMessage("Not found");
             } else {
                 response.setStatus(true);
-                response.setMessage("Admin added successfully");
+                response.setMessage("Admin fetched successfully");
                 response.setData(mapper.mapUserToDto(user));
             }
             return response;

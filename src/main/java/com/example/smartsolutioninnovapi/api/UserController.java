@@ -1,6 +1,7 @@
 package com.example.smartsolutioninnovapi.api;
 
 import com.example.smartsolutioninnovapi.domain.User;
+import com.example.smartsolutioninnovapi.dto.UserDto;
 import com.example.smartsolutioninnovapi.utils.responses.CollectionResponse;
 import com.example.smartsolutioninnovapi.utils.responses.Response;
 import com.example.smartsolutioninnovapi.services.UserService;
@@ -34,6 +35,13 @@ public class UserController {
     }
 
 
+    @GetMapping("/users/get/{id}")
+    public ResponseEntity<Response> getById(
+            @PathVariable("id")  Long id
+    ) {
+        return ResponseEntity.ok().body(userService.getUserById(id));
+    }
+
     @PostMapping("/user/save")
     public ResponseEntity<Response> saveUser(@RequestBody User user, HttpServletRequest request) {
         User currentUser = tokenUtils.getCurrentUser(request);
@@ -41,6 +49,12 @@ public class UserController {
         return ResponseEntity.created(uri).body(userService.saveUser(user, currentUser));
     }
 
+    @PatchMapping("/user/edit")
+    public ResponseEntity<Response> editAdmin(@RequestBody UserDto admin, HttpServletRequest request) {
+        User currentUser = tokenUtils.getCurrentUser(request);
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/user/edit").toUriString());
+        return ResponseEntity.created(uri).body(userService.updateUser(admin, currentUser));
+    }
 
 
 

@@ -11,5 +11,6 @@ public interface RoleService {
     void addRoleToUser(String username, String roleName);
 
     CollectionResponse getAdminRoles(Optional<Integer> page, Optional<Integer> size, Optional<String> sortBy);
+    CollectionResponse getUserRoles(Optional<Integer> page, Optional<Integer> size, Optional<String> sortBy);
 
 }

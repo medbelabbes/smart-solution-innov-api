@@ -12,7 +12,7 @@ public interface AdminService {
 
     Response saveAdmin(User user, User connectedAdmin);
 
-    Response updatedAdmin(UserDto userDto, User connectedAdmin);
+    Response updateAdmin(UserDto userDto, User connectedAdmin);
 
     Response deleteAdmin(UserDto userDto, User connectedAdmin);
 

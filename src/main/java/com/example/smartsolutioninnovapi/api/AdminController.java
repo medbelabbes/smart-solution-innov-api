@@ -33,7 +33,6 @@ public class AdminController {
             @RequestParam Optional<Integer> size,
             @RequestParam Optional<String> sortBy
     ) {
-        System.out.println("role is " + role);
         return ResponseEntity.ok().body(adminService.getAdmins(query, role, page, size, sortBy));
     }
 
@@ -51,12 +50,11 @@ public class AdminController {
         return ResponseEntity.created(uri).body(adminService.saveAdmin(admin, currentUser));
     }
 
-    @PutMapping("/admin/edit")
+    @PatchMapping("/admin/edit")
     public ResponseEntity<Response> editAdmin(@RequestBody UserDto admin, HttpServletRequest request) {
-        System.out.println(admin.getId());
-        System.out.println("*******************");
         User currentUser = tokenUtils.getCurrentUser(request);
-        return ResponseEntity.created(null).body(adminService.updatedAdmin(admin, currentUser));
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/admin/edit").toUriString());
+        return ResponseEntity.created(uri).body(adminService.updateAdmin(admin, currentUser));
     }
 
 

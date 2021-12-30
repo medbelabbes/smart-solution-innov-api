@@ -11,13 +11,13 @@ import java.util.Optional;
 public interface UserService {
     Response saveUser(User user, User connectedAdmin);
 
-    Response updateUser(UserDto userDto);
+    Response updateUser(UserDto userDto, User connectedAdmin);
 
 
     Response deleteUser(UserDto userDto);
 
 
-    Response getUserById(String username);
+    Response getUserById(long id);
 
 
     User getUserByUsername(String username);
@@ -30,9 +30,6 @@ public interface UserService {
     Response updatePassword(UserDto userDto) throws Exception;
 
     boolean changeUserStatus(long id, UserStatus userStatus) throws Exception;
-
-
-
 
 
 }

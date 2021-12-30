@@ -32,12 +32,21 @@ public class RoleController {
     }
 
     @GetMapping("/roles/admin-roles")
-    public ResponseEntity<CollectionResponse> getRoles(
+    public ResponseEntity<CollectionResponse> getAdminRoles(
             @RequestParam Optional<Integer> page,
             @RequestParam Optional<Integer> size,
             @RequestParam Optional<String> sortBy
     ) {
         return ResponseEntity.ok().body(roleService.getAdminRoles(page, size, sortBy));
+    }
+
+    @GetMapping("/roles/user-roles")
+    public ResponseEntity<CollectionResponse> getUserRoles(
+            @RequestParam Optional<Integer> page,
+            @RequestParam Optional<Integer> size,
+            @RequestParam Optional<String> sortBy
+    ) {
+        return ResponseEntity.ok().body(roleService.getUserRoles(page, size, sortBy));
     }
 
 }
